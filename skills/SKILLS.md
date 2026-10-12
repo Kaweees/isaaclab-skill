@@ -20,7 +20,7 @@ examples.
 - [Setup and troubleshooting](#setup-and-troubleshooting) — install, verify, diagnose launch failures
 - [Environment authoring](#environment-authoring) — create tasks, choose workflows, convert direct environments
 - [Sensors, actuators, and randomization](#sensors-actuators-and-randomization) — task data, control models, event terms
-- [Physics backends and policy transfer](#physics-backends-and-policy-transfer) — PhysX, Newton, presets, asset readiness, sim-to-sim
+- [Physics backends and policy transfer](#physics-backends-and-policy-transfer) — PhysX, Newton, OvPhysX, presets, asset readiness, sim-to-sim
 - [Reinforcement learning](#reinforcement-learning) — train, debug, and scale across GPUs or nodes
 - [Manipulation and pose diagnostics](#manipulation-and-pose-diagnostics) — phase-gated manipulation tasks and measured joint-pose fixes
 - [Migration](#migration) — Isaac Gym to Isaac Lab and Isaac Lab 2.x to 3.x
@@ -37,8 +37,8 @@ launch failures before starting task work.
 
 | Skill | Status | What it does |
 |---|---|---|
-| [`isaaclab-installing-isaac-lab`](install-isaac-lab/SKILL.md) | Experimental | Auto-detects the host, selects the documented install route, presents one consolidated confirmation, executes the official commands, and verifies the result. |
-| [`isaaclab-setup-troubleshooting`](setup-troubleshooting/SKILL.md) | Experimental | Routes installation, import, verification, and launch failures to the matching official troubleshooting guidance and smallest useful check. |
+| [`isaaclab-installing-isaac-lab`](install-isaac-lab/SKILL.md) | Experimental | Auto-detects the host, selects the documented install route, applies the documented China Asset Region Profile when requested, presents one consolidated confirmation, executes the official commands, and verifies the result. |
+| [`isaaclab-setup-troubleshooting`](setup-troubleshooting/SKILL.md) | Experimental | Routes installation, import, verification, launch, and simulation-performance problems to the matching official troubleshooting guidance and smallest useful check. |
 
 ---
 
@@ -64,7 +64,7 @@ reset, and step.
 | Skill | Status | What it does |
 |---|---|---|
 | [`isaaclab-using-sensors-actuators`](use-sensors-actuators/SKILL.md) | Experimental | Adds cameras, contact and joint-wrench sensors, ray casters, IMUs, sensor-derived observations or rewards, and actuator models; validates binding, shape, device, and update timing. |
-| [`isaaclab-randomizing-with-events`](domain-randomization-events/SKILL.md) | Stable | Implements domain randomization through `EventManager` terms in direct and manager-based tasks, including backend-aware prestartup, startup, reset, and interval modes. |
+| [`isaaclab-randomizing-with-events`](domain-randomization-events/SKILL.md) | Stable | Implements domain randomization through `EventManager` terms in direct and manager-based tasks, including backend-aware prestartup, startup, reset, and interval modes, plus success-driven Automatic/Adaptive Domain Randomization (ADR) curricula. |
 
 ---
 
@@ -75,10 +75,10 @@ Newton with MJWarp, and validate policy transfer in both directions.
 
 | Skill | Status | What it does |
 |---|---|---|
-| [`isaaclab-selecting-backends`](select-backends/SKILL.md) | Experimental | Selects and validates PhysX, Newton, and renderer behavior; maps settings through public schema configs and checks backend support before training. |
+| [`isaaclab-selecting-backends`](select-backends/SKILL.md) | Experimental | Selects and validates PhysX, Newton, OvPhysX, and renderer behavior; maps settings through public schema configs and checks backend support before training. |
 | [`isaaclab-using-presets`](use-presets/SKILL.md) | Experimental | Encapsulates explicit backend and renderer alternatives behind named `PresetCfg` variants. |
 | [`isaaclab-preparing-assets-for-newton`](prepare-assets-for-newton/SKILL.md) | Experimental | Makes PhysX-compatible robots, objects, and scenes ready for Newton MJWarp by auditing imported schemas, mechanics, contact, actuator response, solver profiles, and reset stability. |
-| [`isaaclab-transferring-policies-sim-to-sim`](isaaclab-transferring-policies-sim-to-sim/SKILL.md) | Experimental | Transfers policies between PhysX and Newton MJWarp after task and asset parity, preserving the checkpoint contract and evaluating the full PhysX/PhysX, PhysX/Newton, Newton/Newton, and Newton/PhysX matrix. |
+| [`isaaclab-transferring-policies-sim-to-sim`](isaaclab-transferring-policies-sim-to-sim/SKILL.md) | Experimental | Transfers policies between PhysX and Newton MJWarp after task and asset parity, preserving the checkpoint contract, resolving joint and body ordering to the source checkpoint's convention, and evaluating the full PhysX/PhysX, PhysX/Newton, Newton/Newton, and Newton/PhysX matrix; validated on `Isaac-Lift-Franka`, `Isaac-Velocity-Rough-G1`, and `Isaac-Velocity-Rough-AnymalD`. |
 
 ---
 
@@ -115,9 +115,9 @@ Preserve a working baseline and migrate one compatibility layer at a time.
 
 | Skill | Status | What it does |
 |---|---|---|
-| [`isaaclab-migrating-from-isaac-gym`](migrate-from-isaac-gym/SKILL.md) | Experimental | Ports Isaac Gym tasks, tensors, assets, rewards, resets, and training to a direct Isaac Lab environment first, then validates actual policy behavior. |
+| [`isaaclab-migrating-from-isaac-gym`](migrate-from-isaac-gym/SKILL.md) | Experimental | Ports Isaac Gym tasks, tensors, assets, rewards, resets, and training directly to the current Isaac Lab APIs as a direct environment first (no intermediate older-release port), then validates actual policy behavior. |
 | [`isaaclab-converting-direct-to-manager`](convert-direct-to-manager/SKILL.md) | Experimental | Provides the follow-up path from a validated direct parity port to a reusable manager-based task. |
-| [`isaaclab-migrating-2x-to-3x`](migrate-2x-to-3x/SKILL.md) | Experimental | Migrates Isaac Lab 2.x projects to 3.x across visualization, backends, schema configs, quaternion conventions, `ProxyArray`, asset views, RL configs, and extension loading. |
+| [`isaaclab-migrating-2x-to-3x`](migrate-2x-to-3x/SKILL.md) | Experimental | Migrates Isaac Lab 2.x projects to 3.x across installation, backends and presets, asset and actuator APIs, sensors, quaternion conventions, `ProxyArray`, RL entry points, visualizers and recording, importers, and extension loading. |
 
 ---
 
@@ -238,7 +238,7 @@ point matching the request, then follow its cross-skill hand-offs:
 | Install Isaac Lab | [`isaaclab-installing-isaac-lab`](install-isaac-lab/SKILL.md) | [`isaaclab-setup-troubleshooting`](setup-troubleshooting/SKILL.md) if verification fails |
 | Create a new task | [`isaaclab-building-environments`](create-environments/SKILL.md) | Sensors/actuators, events, presets, then RL training |
 | Add contacts, cameras, IMUs, or actuators | [`isaaclab-using-sensors-actuators`](use-sensors-actuators/SKILL.md) | Backend selection if support differs |
-| Add domain randomization | [`isaaclab-randomizing-with-events`](domain-randomization-events/SKILL.md) | Presets when PhysX and Newton need different terms |
+| Add domain randomization or ADR | [`isaaclab-randomizing-with-events`](domain-randomization-events/SKILL.md) | Presets when PhysX and Newton need different terms |
 | Build a manipulation task | [`isaaclab-planning-manipulation-tasks`](plan-manipulation-tasks/SKILL.md) | Environment authoring, sensor setup, and pose diagnostics |
 | Train a task | [`isaaclab-training-rl-agents`](train-rl-agents/SKILL.md) | RL debugging, then multi-GPU scaling |
 | Debug learned behavior | [`isaaclab-debugging-rl-training`](debug-rl-training/SKILL.md) | Manipulation planning for contact-rich task failures |
@@ -253,10 +253,12 @@ point matching the request, then follow its cross-skill hand-offs:
 ## When stuck
 
 - Installation, import, or launch failure: [`isaaclab-setup-troubleshooting`](setup-troubleshooting/SKILL.md)
+- Simulation or training is unexpectedly slow: [`isaaclab-setup-troubleshooting`](setup-troubleshooting/SKILL.md)
 - Environment does not import, reset, or step: [`isaaclab-building-environments`](create-environments/SKILL.md)
 - Reward improves but behavior does not: [`isaaclab-debugging-rl-training`](debug-rl-training/SKILL.md)
 - Distributed job hangs or aborts in NCCL: [`isaaclab-training-multi-gpu`](train-multi-gpu/SKILL.md)
 - PhysX and Newton behave differently: [`isaaclab-selecting-backends`](select-backends/SKILL.md)
+- A transferred checkpoint drives the wrong joints in the other backend: [`isaaclab-transferring-policies-sim-to-sim`](isaaclab-transferring-policies-sim-to-sim/SKILL.md)
 - An asset fails or becomes unstable only in Newton MJWarp: [`isaaclab-preparing-assets-for-newton`](prepare-assets-for-newton/SKILL.md)
 - Robot tool, wrist, camera, or gripper starts in the wrong orientation: [`isaaclab-diagnosing-joint-poses`](diagnose-joint-poses/SKILL.md)
 
