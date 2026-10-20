@@ -2,6 +2,8 @@
 
 A collection of [Agent Skills](https://agentskills.io/) for NVIDIA Isaac Lab which covers building, training, debugging, and migrating NVIDIA Isaac Lab projects across PhysX and Newton.
 
+The skills mirror the `skills/user/` directory of the [Isaac Lab](https://github.com/isaac-sim/IsaacLab) repository. This version tracks Isaac Lab v3.0.0.
+
 ## Install
 
 Install with the [`skills` CLI](https://github.com/vercel-labs/skills).
@@ -30,7 +32,7 @@ npx skills add kaweees/isaaclab-skill --all     # install every skill for every 
    | `$ISAAC_SIM_DIR` | Isaac Sim install or source-build root, when required | `/path/to/IsaacSim` |
    | `$WORKSPACE_DIR` | Project outputs, experiments, logs, and scratch space | `/path/to/project/.workspace` |
 
-2. Start with the catalog and entry skills: [skills/SKILLS.md](skills/SKILLS.md), then `meta-skills` and `isaac-sim-orchestrator`.
+2. Start with the catalog: [skills/SKILLS.md](skills/SKILLS.md). Its [suggested read order](skills/SKILLS.md#suggested-read-order) maps each kind of request to an entry skill.
 
 ## Layout
 

@@ -37,8 +37,8 @@ launch failures before starting task work.
 
 | Skill | Status | What it does |
 |---|---|---|
-| [`isaaclab-installing-isaac-lab`](install-isaac-lab/SKILL.md) | Experimental | Auto-detects the host, selects the documented install route, applies the documented China Asset Region Profile when requested, presents one consolidated confirmation, executes the official commands, and verifies the result. |
-| [`isaaclab-setup-troubleshooting`](setup-troubleshooting/SKILL.md) | Experimental | Routes installation, import, verification, launch, and simulation-performance problems to the matching official troubleshooting guidance and smallest useful check. |
+| [`isaaclab-installing-isaac-lab`](install-isaac-lab/SKILL.md) | Experimental | Auto-detects the host, selects the documented install route (automatic uv, downloaded Isaac Sim, source build, Isaac Lab wheel, legacy `isaaclab.sh`, managed Python env, or Docker), applies the documented China Asset Region Profile when requested, presents one consolidated confirmation, executes the official commands, and verifies the result. |
+| [`isaaclab-setup-troubleshooting`](setup-troubleshooting/SKILL.md) | Experimental | Routes installation, import, verification, launch, known-issue (such as RTX camera buffer limits), and simulation-performance problems to the matching official troubleshooting guidance and smallest useful check. |
 
 ---
 
@@ -50,7 +50,7 @@ migrations, bespoke control flow, and validated prototypes.
 
 | Skill | Status | What it does |
 |---|---|---|
-| [`isaaclab-building-environments`](create-environments/SKILL.md) | Experimental | Builds and registers complete tasks, chooses manager-based versus direct workflow, and validates import, reset, random stepping, and short training. |
+| [`isaaclab-building-environments`](create-environments/SKILL.md) | Experimental | Scaffolds template-generated external projects or internal tasks with `uv run isaaclab --new`, chooses manager-based versus direct workflow, implements the task, and validates registration, reset, random stepping, and short training. |
 | [`isaaclab-converting-direct-to-manager`](convert-direct-to-manager/SKILL.md) | Experimental | Converts a validated direct environment into reusable scene, action, observation, reward, command, event, curriculum, and termination configurations while retaining the direct baseline for parity checks. |
 | [`isaaclab-using-presets`](use-presets/SKILL.md) | Experimental | Defines discoverable `PresetCfg` variants for physics, rendering, sensors, events, and task-specific configuration without scattering runtime conditionals through task logic. |
 
@@ -75,10 +75,10 @@ Newton with MJWarp, and validate policy transfer in both directions.
 
 | Skill | Status | What it does |
 |---|---|---|
-| [`isaaclab-selecting-backends`](select-backends/SKILL.md) | Experimental | Selects and validates PhysX, Newton, OvPhysX, and renderer behavior; maps settings through public schema configs and checks backend support before training. |
+| [`isaaclab-selecting-backends`](select-backends/SKILL.md) | Experimental | Selects and validates PhysX, Newton, OvPhysX, and renderer behavior, including the opt-in asynchronous render path; maps settings through public schema configs and checks backend support before training. |
 | [`isaaclab-using-presets`](use-presets/SKILL.md) | Experimental | Encapsulates explicit backend and renderer alternatives behind named `PresetCfg` variants. |
 | [`isaaclab-preparing-assets-for-newton`](prepare-assets-for-newton/SKILL.md) | Experimental | Makes PhysX-compatible robots, objects, and scenes ready for Newton MJWarp by auditing imported schemas, mechanics, contact, actuator response, solver profiles, and reset stability. |
-| [`isaaclab-transferring-policies-sim-to-sim`](isaaclab-transferring-policies-sim-to-sim/SKILL.md) | Experimental | Transfers policies between PhysX and Newton MJWarp after task and asset parity, preserving the checkpoint contract, resolving joint and body ordering to the source checkpoint's convention, and evaluating the full PhysX/PhysX, PhysX/Newton, Newton/Newton, and Newton/PhysX matrix; validated on `Isaac-Lift-Franka`, `Isaac-Velocity-Rough-G1`, and `Isaac-Velocity-Rough-AnymalD`. |
+| [`isaaclab-transferring-policies-sim-to-sim`](isaaclab-transferring-policies-sim-to-sim/SKILL.md) | Experimental | Transfers policies between PhysX and Newton MJWarp after task and asset parity, preserving the checkpoint contract, pinning joint and body ordering to one convention for training and every replay, and evaluating the full PhysX/PhysX, PhysX/Newton, Newton/Newton, and Newton/PhysX matrix; validated on `Isaac-Lift-Franka`, `Isaac-Velocity-Rough-G1`, and `Isaac-Velocity-Rough-AnymalD`. |
 
 ---
 
@@ -115,9 +115,9 @@ Preserve a working baseline and migrate one compatibility layer at a time.
 
 | Skill | Status | What it does |
 |---|---|---|
-| [`isaaclab-migrating-from-isaac-gym`](migrate-from-isaac-gym/SKILL.md) | Experimental | Ports Isaac Gym tasks, tensors, assets, rewards, resets, and training directly to the current Isaac Lab APIs as a direct environment first (no intermediate older-release port), then validates actual policy behavior. |
+| [`isaaclab-migrating-from-isaac-gym`](migrate-from-isaac-gym/SKILL.md) | Experimental | Ports Isaac Gym tasks, tensors, assets, rewards, resets, and training directly to the current Isaac Lab APIs as a direct environment first (no intermediate older-release port), scaffolds new external projects with the template generator, then validates actual policy behavior. |
 | [`isaaclab-converting-direct-to-manager`](convert-direct-to-manager/SKILL.md) | Experimental | Provides the follow-up path from a validated direct parity port to a reusable manager-based task. |
-| [`isaaclab-migrating-2x-to-3x`](migrate-2x-to-3x/SKILL.md) | Experimental | Migrates Isaac Lab 2.x projects to 3.x across installation, backends and presets, asset and actuator APIs, sensors, quaternion conventions, `ProxyArray`, RL entry points, visualizers and recording, importers, and extension loading. |
+| [`isaaclab-migrating-2x-to-3x`](migrate-2x-to-3x/SKILL.md) | Experimental | Migrates Isaac Lab 2.x projects to 3.x across installation, backends and presets, asset and actuator APIs, sensors, quaternion conventions, `ProxyArray`, RL entry points, simulation launch (`launch_simulation`), visualizers and recording, importers, and extension loading. |
 
 ---
 
@@ -264,4 +264,4 @@ point matching the request, then follow its cross-skill hand-offs:
 
 ---
 
-*Library size: 17 skills (1 stable, 16 experimental).*
+*Library size: 17 skills (1 stable, 16 experimental). Synced from the `skills/user/` directory of Isaac Lab v3.0.0.*
